@@ -79,3 +79,32 @@
 .menu a:hover {
     color: #555;
 }
+
+/* KUVAGALLERIA */
+
+.galleria {
+    max-width: 900px;
+    margin: 100px auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 saraketta*/
+    gap: 5px;
+}
+
+.galleria img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.galleria img.pysty {
+    grid-column: span 2; /* varaa kaksi saraketta */
+    aspect-ratio: 3 / 4; /* pysty */
+}
+
+.galleria img.vaaka {
+    grid-column: span 3; /* varaa kolme saraketta */
+    aspect-ratio: 4 / 3; /* vaaka */
+}
+
