@@ -1,0 +1,81 @@
+/* ALOITUSKUVA */
+
+.hero {
+  height: 100vh; /* koko näytön korkeus */
+  background-image: url('kuvat/alkusivu.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35); /* tummennus */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.sivulle-nappi {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 28px;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ETUSIVU */
+
+/* NAVIGAATIO */
+
+.navi {
+    width: 100%;
+    background: #ffffff;
+    padding: 20px 200px;
+    display: flex;
+    justify-content: space-between; /* logo vasemmalle, linkit oikealle*/
+    align-items: center;
+    flex-wrap: wrap; /* estää ylivuodon */
+    box-sizing: border-box; /* varmistaa ettei leveys kasva */
+    border-bottom: 1px solid #eee;
+}
+
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.menu a:hover {
+    color: #555;
+}
