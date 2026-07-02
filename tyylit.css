@@ -145,3 +145,118 @@
     aspect-ratio: 4 / 3; /* vaaka */
 }
 
+/* HINNASTO */
+
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    letter-spacing: 0.2em;
+}
+
+header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+header p {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+}
+
+.card {
+    border: 1px solid #000;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.price {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* YHTEYSTIEDOT */
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+h1 {
+    text-align: center;
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input, textarea {
+    border: 1px solid #000;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background: #fff;
+    color: #000;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #666;
+}
+
+button {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+}
+
+button:hover {
+    background: #333;
+}
+
+.info {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+}
