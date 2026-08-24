@@ -7,24 +7,25 @@ const API = "http://localhost:5000";
 // ADMIN: kirjautuminen
 // ===============================
 async function kirjauduAdmin() {
-  const kayttaja = document.getElementById("kayttaja").value;
-  const salasana = document.getElementById("admin_salasana").value;
+    const kayttaja = document.getElementById("kayttaja").value;
+    const salasana = document.getElementById("admin_salasana").value;
 
-  const vastaus = await fetch("http://localhost:5000/api/kirjaudu/admin", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kayttaja, salasana })
-  });
+    const vastaus = await fetch("http://localhost:5000/api/kirjautuminen/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kayttaja, salasana })
+    });
 
-  const data = await vastaus.json();
+    const data = await vastaus.json();
 
-  if (vastaus.status === 200) {
-    window.location.href = "admin.html";
-  } else {
-    alert(data.viesti);
-  }
+    if (vastaus.ok) {
+        window.location.href = "admin.html";
+    } else {
+        alert(data.viesti);
+    }
 }
+
 
 
 
