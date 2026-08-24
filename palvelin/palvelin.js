@@ -14,11 +14,6 @@ const app = express();
 // FRONTENDIN PALVELU (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, "../")));
 
-app.use(cors({
-  origin: "http://localhost:5000",
-  credentials: true
-}));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,6 +23,12 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: false }
 }));
+
+app.use(cors({
+  origin: "http://localhost:5000",
+  credentials: true
+}));
+
 
 // ASIAKKAIDEN KUVAT
 app.use("/galleriat", express.static(path.join(__dirname, "julkinen", "galleriat")));
