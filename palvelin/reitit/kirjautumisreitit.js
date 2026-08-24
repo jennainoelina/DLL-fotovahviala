@@ -23,4 +23,30 @@ router.post("/admin", async (req, res) => {
     res.json({ viesti: "Kirjautuminen onnistui" });
 });
 
+// ASIAKAS KIRJAUTUMINEN
+router.post("/asiakas", async (req, res) => {
+    const { asiakasId, salasana } = req.body;
+
+    const fs = require("fs");
+    const path = require("path");
+
+    const salasanaPolku = path.join(__dirname, "../julkinen/galleriat", asiakasId, "salasana.txt");
+
+    if (!fs.existsSync(salasanaPolku)) {
+        return res.status(404).json({ viesti: "Asiakasta ei löytynyt" });
+    }
+
+    const hash = fs.readFileSync(salasanaPolku, "utf8");
+
+    const ok = await bcrypt.compare(salasana, hash);
+
+    if (!ok) {
+        return res.status(401).json({ viesti: "Väärä salasana" });
+    }
+
+    req.session.asiakasId = asiakasId;
+
+    res.json({ viesti: "Kirjautuminen onnistui" });
+});
+
 module.exports = router;

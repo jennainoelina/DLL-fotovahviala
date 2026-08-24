@@ -111,7 +111,7 @@ async function kirjauduAsiakas() {
   const asiakasId = document.getElementById("asiakasId").value;
   const salasana = document.getElementById("asiakas_salasana").value;
 
-  const vastaus = await fetch(`${API}/api/galleria/kirjaudu`, {
+  const vastaus = await fetch(`${API}/api/kirjautuminen/asiakas`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
