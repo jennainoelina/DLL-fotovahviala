@@ -15,7 +15,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "../")));
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:5000",
   credentials: true
 }));
 

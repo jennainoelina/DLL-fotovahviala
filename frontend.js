@@ -134,30 +134,24 @@ async function kirjauduAsiakas() {
 // ===============================
 async function haeKuvat() {
   const vastaus = await fetch(`${API}/api/galleria/kuvat`, {
-    method: "GET",
     credentials: "include"
   });
 
+  if (!vastaus.ok) {
+    console.error("Kuvien haku epäonnistui:", vastaus.status);
+    return;
+  }
+
   const data = await vastaus.json();
 
-  const container = document.getElementById("kuvat");
+  const container = document.getElementById("galleria");
   container.innerHTML = "";
 
-  data.kuvat.forEach(tiedosto => {
+  data.kuvat.forEach(kuva => {
     const img = document.createElement("img");
-    img.src = `${API}/galleriat/${data.asiakasId}/${tiedosto}`;
+    img.src = `/galleriat/${data.asiakasId}/${kuva}`;
     img.classList.add("galleria-kuva");
-
-    // Adminille poistonappi
-    const poistoBtn = document.createElement("button");
-    poistoBtn.innerText = "Poista kuva";
-    poistoBtn.onclick = () => poistaKuva(data.asiakasId, tiedosto);
-
-    const wrapper = document.createElement("div");
-    wrapper.appendChild(img);
-    wrapper.appendChild(poistoBtn);
-
-    container.appendChild(wrapper);
+    container.appendChild(img);
   });
 }
 
