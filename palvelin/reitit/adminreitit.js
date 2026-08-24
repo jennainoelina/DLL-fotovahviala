@@ -6,6 +6,7 @@ const { varmistaKansio, poistaKuva } = require("../palvelut/galleriaPalvelu");
 
 const router = express.Router();
 
+// Multer tallennus
 const tallennus = multer.diskStorage({
   destination: (req, file, cb) => {
     const asiakasId = req.body.asiakasId;
@@ -20,6 +21,7 @@ const tallennus = multer.diskStorage({
 
 const upload = multer({ storage: tallennus });
 
+// Lataa kuvia
 router.post("/lataa", adminVarmistus, upload.array("kuvat", 50), (req, res) => {
   res.json({
     viesti: "Kuvat ladattu",
@@ -27,13 +29,19 @@ router.post("/lataa", adminVarmistus, upload.array("kuvat", 50), (req, res) => {
   });
 });
 
+// Poista kuva
 router.delete("/poista", adminVarmistus, (req, res) => {
   const { asiakasId, tiedosto } = req.body;
   const ok = poistaKuva(asiakasId, tiedosto);
-  if (!ok) return res.status(404).json({ viesti: "Kuvaa ei löytynyt" });
+
+  if (!ok) {
+    return res.status(404).json({ viesti: "Kuvaa ei löytynyt" });
+  }
+
   res.json({ viesti: "Kuva poistettu" });
 });
 
+// Luo asiakaskansio
 router.post("/luo-kansio", adminVarmistus, (req, res) => {
   const { asiakasId } = req.body;
   varmistaKansio(asiakasId);

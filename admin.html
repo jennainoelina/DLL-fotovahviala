@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <title>FOTOVAHVIALA</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="tyylit.css" />
+</head>
+
+<script src="frontend.js" defer></script>
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin-paneeli – Fotovahviala</title>
+  <link rel="stylesheet" href="tyylit.css">
+</head>
+
+<body>
+
+  <!-- Navigaatio -->
+  <nav class="navi">
+      <div class="logo">FOTOVAHVIALA</div>
+  </nav>
+
+  <div class="admin-container">
+
+        <!-- ASIAKASKANSION LUONTI -->
+        <section class="admin-section">
+            <h2>Luo uusi asiakaskansio</h2>
+
+            <label>Asiakas ID</label>
+            <input id="uusiAsiakasId" type="text" placeholder="esim. asiakas123">
+
+            <button onclick="luoAsiakasKansio()">Luo kansio</button>
+        </section>
+
+        <!-- KUVATEN LATAUS -->
+        <section class="admin-section">
+            <h2>Lataa kuvia asiakkaalle</h2>
+
+            <label>Asiakas ID</label>
+            <input id="uploadAsiakasId" type="text" placeholder="esim. asiakas123">
+
+            <label>Valitse kuvat</label>
+            <input id="kuvatInput" type="file" multiple>
+
+            <button onclick="lataaKuvat()">Lataa kuvat</button>
+        </section>
+
+        <!-- ASIAKKAAN KUVAT -->
+        <section class="admin-section">
+            <h2>Asiakkaan kuvat</h2>
+
+            <button onclick="haeKuvat()">Päivitä kuvat</button>
+
+            <div id="kuvat" class="galleria"></div>
+        </section>
+
+    </div>
+
+
+</body>
+</html>

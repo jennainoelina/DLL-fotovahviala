@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Asiakasgalleria – Fotovahviala</title>
+    <link rel="stylesheet" href="tyylit.css">
+</head>
+
+<script src="frontend.js" defer></script>
+
+
+<body>
+
+    <!-- Navigaatio -->
+    <nav class="navi">
+        <div class="logo">FOTOVAHVIALA</div>
+
+        <ul class="menu">
+            <li><a href="etusivu.html">ETUSIVU</a></li>
+            <li><a href="portfolio.html">PORTFOLIO</a></li>
+            <li><a href="hinnasto.html">HINNASTO</a></li>
+            <li><a href="yhteystiedot.html">YHTEYSTIEDOT</a></li>
+            <li><a href="kirjautuminen.html">GALLERIA</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h1>KUVAGALLERIA</h1>
+
+        <!-- KUVAT -->
+        <div id="kuvat" class="galleria"></div>
+
+        <!-- ZIP-lataus -->
+        <div style="text-align:center; margin-top: 2rem;">
+            <button onclick="lataaZip()">Lataa kaikki ZIP-tiedostona</button>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            haeKuvat(); 
+        });
+    </script>
+
+
+</body>
+</html>

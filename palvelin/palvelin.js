@@ -39,3 +39,6 @@ const PORTTI = process.env.PORT || 5000;
 app.listen(PORTTI, () => {
   console.log(`Palvelin käynnissä portissa ${PORTTI}`);
 });
+
+const kirjaudu = require("./reitit/kirjautumisreitit");
+app.use("/api/kirjaudu", kirjaudu);
