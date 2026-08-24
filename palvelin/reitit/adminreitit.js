@@ -1,51 +1,23 @@
 const express = require("express");
-const multer = require("multer");
-const path = require("path");
-const { adminVarmistus } = require("../valiaohjelmat/adminVarmistus");
-const { varmistaKansio, poistaKuva } = require("../palvelut/galleriaPalvelu");
-
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
+const bcrypt = require("bcrypt");
 
-// Multer tallennus
-const tallennus = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const asiakasId = req.body.asiakasId;
-    const kansio = varmistaKansio(asiakasId);
-    cb(null, kansio);
-  },
-  filename: (req, file, cb) => {
-    const nimi = Date.now() + "-" + file.originalname.replace(/\s+/g, "_");
-    cb(null, nimi);
-  }
-});
+router.post("/luo-asiakas", async (req, res) => {
+    const { asiakasId, salasana } = req.body;
 
-const upload = multer({ storage: tallennus });
+    const asiakasKansio = path.join(__dirname, "../julkinen/galleriat", asiakasId);
 
-// Lataa kuvia
-router.post("/lataa", adminVarmistus, upload.array("kuvat", 50), (req, res) => {
-  res.json({
-    viesti: "Kuvat ladattu",
-    tiedostot: req.files.map(f => path.basename(f.path))
-  });
-});
+    if (!fs.existsSync(asiakasKansio)) {
+        fs.mkdirSync(asiakasKansio, { recursive: true });
+    }
 
-// Poista kuva
-router.delete("/poista", adminVarmistus, (req, res) => {
-  const { asiakasId, tiedosto } = req.body;
-  const ok = poistaKuva(asiakasId, tiedosto);
+    const hash = await bcrypt.hash(salasana, 10);
 
-  if (!ok) {
-    return res.status(404).json({ viesti: "Kuvaa ei löytynyt" });
-  }
+    fs.writeFileSync(path.join(asiakasKansio, "salasana.txt"), hash);
 
-  res.json({ viesti: "Kuva poistettu" });
-});
-
-// Luo asiakaskansio
-router.post("/luo-kansio", adminVarmistus, (req, res) => {
-  const { asiakasId } = req.body;
-  varmistaKansio(asiakasId);
-  res.json({ viesti: "Asiakaskansio luotu", asiakasId });
+    res.json({ viesti: "Asiakas luotu ja salasana tallennettu" });
 });
 
 module.exports = router;

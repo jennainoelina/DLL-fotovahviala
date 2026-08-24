@@ -31,18 +31,36 @@ async function kirjauduAdmin() {
 // ===============================
 // ADMIN: luo asiakaskansio
 // ===============================
-async function luoAsiakasKansio() {
+async function luoAsiakas() {
   const asiakasId = document.getElementById("uusiAsiakasId").value;
+  const salasana = document.getElementById("uusiAsiakasSalasana").value;
 
-  const vastaus = await fetch(`${API}/api/admin/luo-kansio`, {
+  if (!asiakasId || !salasana) {
+    alert("Anna sekä asiakasId että salasana");
+    return;
+  }
+
+  // 1. Luo kansio
+  const kansioVastaus = await fetch(`${API}/api/admin/luo-kansio`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ asiakasId })
   });
 
-  const data = await vastaus.json();
-  alert(data.viesti);
+  const kansioData = await kansioVastaus.json();
+
+  // 2. Aseta salasana
+  const salasanaVastaus = await fetch(`${API}/api/admin/luo-salasana`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ asiakasId, salasana })
+  });
+
+  const salasanaData = await salasanaVastaus.json();
+
+  alert(`Asiakas luotu!\n${kansioData.viesti}\n${salasanaData.viesti}`);
 }
 
 // ===============================

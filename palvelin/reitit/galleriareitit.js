@@ -1,46 +1,21 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const asiakkaat = require("../data/asiakkaat.json");
-const { listaaKuvat } = require("../palvelut/galleriaPalvelu");
-const { luoZip } = require("../palvelut/zipPalvelu");
-
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 
-router.post("/kirjaudu", async (req, res, next) => {
-  try {
-    const { asiakasId, salasana } = req.body;
-    const asiakas = asiakkaat.find(a => a.id === asiakasId);
+router.get("/:asiakasId", (req, res) => {
+    const asiakasId = req.params.asiakasId;
 
-    if (!asiakas) return res.status(404).json({ viesti: "Asiakasta ei löytynyt" });
+    const kansio = path.join(__dirname, "../julkinen/galleriat", asiakasId);
 
-    const ok = await bcrypt.compare(salasana, asiakas.salasanaHash);
-    if (!ok) return res.status(401).json({ viesti: "Virheellinen salasana" });
+    if (!fs.existsSync(kansio)) {
+        return res.status(404).json({ viesti: "Asiakasta ei löytynyt" });
+    }
 
-    req.session.asiakasId = asiakasId;
-    res.json({ viesti: "Kirjautuminen onnistui", asiakasId });
-  } catch (err) {
-    next(err);
-  }
-});
+    const kuvat = fs.readdirSync(kansio).filter(tiedosto => tiedosto !== "salasana.txt");
 
-function vaadiAsiakas(req, res, next) {
-  if (req.session && req.session.asiakasId) return next();
-  return res.status(401).json({ viesti: "Ei oikeuksia" });
-}
-
-router.get("/kuvat", vaadiAsiakas, (req, res) => {
-  const asiakasId = req.session.asiakasId;
-  const kuvat = listaaKuvat(asiakasId);
-  res.json({ asiakasId, kuvat });
-});
-
-router.get("/zip", vaadiAsiakas, (req, res, next) => {
-  try {
-    const asiakasId = req.session.asiakasId;
-    luoZip(asiakasId, res);
-  } catch (err) {
-    next(err);
-  }
+    res.json({ kuvat });
 });
 
 module.exports = router;
+

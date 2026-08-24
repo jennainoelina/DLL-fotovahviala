@@ -11,6 +11,9 @@ const galleriareitit = require("./reitit/galleriareitit");
 
 const app = express();
 
+// FRONTENDIN PALVELU (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, "../")));
+
 app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
@@ -26,19 +29,20 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+// ASIAKKAIDEN KUVAT
 app.use("/galleriat", express.static(path.join(__dirname, "julkinen", "galleriat")));
 
+// API-REITIT
 app.use("/api/kirjautuminen", kirjautumisreitit);
 app.use("/api/admin", adminreitit);
 app.use("/api/galleria", galleriareitit);
 
+// VIRHEKÄSITTELIJÄ
 const { virheKasittelija } = require("./valiaohjelmat/virheKasittelija");
 app.use(virheKasittelija);
 
+// PALVELIN KÄYNTIIN
 const PORTTI = process.env.PORT || 5000;
 app.listen(PORTTI, () => {
   console.log(`Palvelin käynnissä portissa ${PORTTI}`);
 });
-
-const kirjaudu = require("./reitit/kirjautumisreitit");
-app.use("/api/kirjaudu", kirjaudu);

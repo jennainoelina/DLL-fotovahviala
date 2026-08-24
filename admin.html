@@ -26,15 +26,19 @@
 
   <div class="admin-container">
 
-        <!-- ASIAKASKANSION LUONTI -->
+        <!-- ASIAKKAAN LUONTI (ID + salasana + kansio) -->
         <section class="admin-section">
-            <h2>Luo uusi asiakaskansio</h2>
+            <h2>Luo uusi asiakas</h2>
 
             <label>Asiakas ID</label>
             <input id="uusiAsiakasId" type="text" placeholder="esim. asiakas123">
 
-            <button onclick="luoAsiakasKansio()">Luo kansio</button>
+            <label>Salasana</label>
+            <input id="uusiAsiakasSalasana" type="password" placeholder="salasana">
+
+            <button onclick="luoAsiakas()">Luo kansio</button>
         </section>
+
 
         <!-- KUVATEN LATAUS -->
         <section class="admin-section">
