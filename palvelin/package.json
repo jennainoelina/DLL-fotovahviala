@@ -4,8 +4,8 @@
   "description": "",
   "main": "palvelin.js",
   "scripts": {
-  "start": "node palvelin.js",
-  "dev": "nodemon palvelin.js"
+    "start": "node palvelin.js",
+    "dev": "nodemon palvelin.js"
   },
   "keywords": [],
   "author": "",
