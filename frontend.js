@@ -90,79 +90,143 @@ async function lataaKuvat() {
 }
 
 // ===============================
-// ADMIN: asiakaslista/poisto
+// ADMIN: asiakaslista
 // ===============================
-let asiakkaat = [
-    { id: "asiakas123" },
-    { id: "asiakas456" },
-    { id: "asiakas789" }
-];
 
-function naytaAsiakkaat() {
-    const lista = document.getElementById("asiakkaatLista");
+async function naytaAsiakkaat() {
 
-    lista.innerHTML = "";
+    try {
 
-    asiakkaat.forEach(asiakas => {
-        const rivi = document.createElement("div");
-        rivi.className = "asiakas-rivi";
+        const vastaus = await fetch(
+            "/api/admin/asiakkaat"
+        );
 
-        rivi.innerHTML = `
-            <span>${asiakas.id}</span>
+        const asiakkaat = await vastaus.json();
 
-            <button onclick="poistaKuvat('${asiakas.id}')">
-                Poista kuvat
-            </button>
+        const lista = document.getElementById(
+            "asiakkaatLista"
+        );
 
-            <button onclick="poistaAsiakas('${asiakas.id}')"
-                    class="danger-button">
-                Poista asiakas
-            </button>
-        `;
+        lista.innerHTML = "";
 
-        lista.appendChild(rivi);
-    });
-}
+        asiakkaat.forEach(asiakasId => {
 
-function poistaKuvat(asiakasId) {
-    if (confirm(`Poistetaanko kaikki kuvat asiakkaalta ${asiakasId}?`)) {
-        console.log("Poistetaan kuvat:", asiakasId);
+            const rivi = document.createElement("div");
 
-        // Kutsu backendiin
-        // fetch(`/api/asiakkaat/${asiakasId}/kuvat`, { method: "DELETE" });
+            rivi.className = "asiakas-rivi";
+
+            rivi.innerHTML = `
+                <span>${asiakasId}</span>
+
+                <button onclick="poistaKuvat('${asiakasId}')">
+                    Poista kuvat
+                </button>
+
+                <button
+                    class="danger-button"
+                    onclick="poistaAsiakas('${asiakasId}')">
+                    Poista asiakas
+                </button>
+            `;
+
+            lista.appendChild(rivi);
+
+        });
+
+    } catch (virhe) {
+
+        console.error(
+            "Asiakkaiden haku epäonnistui:",
+            virhe
+        );
+
     }
+
 }
 
-function poistaAsiakas(asiakasId) {
-    if (confirm(`Poistetaanko asiakas ${asiakasId}?`)) {
-        console.log("Poistetaan asiakas:", asiakasId);
+// ===============================
+// Poista asiakkaan kuvat
+// ===============================
 
-        asiakkaat = asiakkaat.filter(a => a.id !== asiakasId);
+async function poistaKuvat(asiakasId) {
 
-        // Kutsu backendiin
-        // fetch(`/api/asiakkaat/${asiakasId}`, { method: "DELETE" });
-
-        naytaAsiakkaat();
+    if (
+        !confirm(
+            `Poistetaanko kaikki kuvat asiakkaalta ${asiakasId}?`
+        )
+    ) {
+        return;
     }
+
+    try {
+
+        const vastaus = await fetch(
+            `/api/admin/asiakkaat/${asiakasId}/kuvat`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await vastaus.json();
+
+        alert(data.viesti);
+
+    } catch (virhe) {
+
+        console.error(virhe);
+        alert("Kuvien poisto epäonnistui");
+
+    }
+
 }
 
-document.addEventListener("DOMContentLoaded", naytaAsiakkaat);
-
-
 // ===============================
-// ADMIN: poista kuva
+// Poista asiakas
 // ===============================
-async function poistaKuva(asiakasId, tiedosto) {
-  const vastaus = await fetch(`${API}/api/admin/poista`, {
-    method: "DELETE",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ asiakasId, tiedosto })
-  });
 
-  const data = await vastaus.json();
-  alert(data.viesti);
+async function poistaAsiakas(asiakasId) {
+
+    if (
+        !confirm(
+            `Poistetaanko asiakas ${asiakasId}?`
+        )
+    ) {
+        return;
+    }
+
+    try {
+
+        const vastaus = await fetch(
+            `/api/admin/asiakkaat/${asiakasId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await vastaus.json();
+
+        alert(data.viesti);
+
+        await naytaAsiakkaat();
+
+    } catch (virhe) {
+
+        console.error(virhe);
+        alert("Asiakkaan poisto epäonnistui");
+
+    }
+
 }
+
+// ===============================
+// Lataa lista sivun avautuessa
+// ===============================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    naytaAsiakkaat
+);
+
 
 // ===============================
 // ASIAKAS: kirjautuminen
