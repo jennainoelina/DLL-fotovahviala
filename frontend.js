@@ -30,38 +30,75 @@ async function kirjauduAdmin() {
 
 
 // ===============================
-// ADMIN: luo asiakaskansio
+// ADMIN: luo asiakas
 // ===============================
+
 async function luoAsiakas() {
-  const asiakasId = document.getElementById("uusiAsiakasId").value;
-  const salasana = document.getElementById("uusiAsiakasSalasana").value;
 
-  if (!asiakasId || !salasana) {
-    alert("Anna sekä asiakasId että salasana");
-    return;
-  }
+    const asiakasId =
+        document.getElementById("uusiAsiakasId").value.trim();
 
-  // 1. Luo kansio
-  const kansioVastaus = await fetch(`${API}/api/admin/luo-kansio`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ asiakasId })
-  });
+    const salasana =
+        document.getElementById("uusiAsiakasSalasana").value;
 
-  const kansioData = await kansioVastaus.json();
+    if (!asiakasId || !salasana) {
 
-  // 2. Aseta salasana
-  const salasanaVastaus = await fetch(`${API}/api/admin/luo-salasana`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ asiakasId, salasana })
-  });
+        alert("Anna sekä asiakas ID että salasana");
+        return;
 
-  const salasanaData = await salasanaVastaus.json();
+    }
 
-  alert(`Asiakas luotu!\n${kansioData.viesti}\n${salasanaData.viesti}`);
+    try {
+
+        const vastaus = await fetch(
+            `${API}/api/admin/luo-asiakas`,
+            {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    asiakasId,
+                    salasana
+                })
+            }
+        );
+
+        const data = await vastaus.json();
+
+        if (!vastaus.ok) {
+            throw new Error(
+                data.virhe || "Tuntematon virhe"
+            );
+        }
+
+        alert(data.viesti);
+
+        document.getElementById(
+            "uusiAsiakasId"
+        ).value = "";
+
+        document.getElementById(
+            "uusiAsiakasSalasana"
+        ).value = "";
+
+        await naytaAsiakkaat();
+
+    } catch (virhe) {
+
+        console.error(
+            "Asiakkaan luonti epäonnistui:",
+            virhe
+        );
+
+        alert(
+            "Asiakkaan luonti epäonnistui: " +
+            virhe.message
+        );
+
+    }
+
 }
 
 // ===============================
