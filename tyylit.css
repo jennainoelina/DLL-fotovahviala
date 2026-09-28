@@ -349,6 +349,19 @@ button:hover {
     margin-top: 0.5rem;
 }
 
+.asiakas-rivi {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    border: solid 1px;
+    margin-bottom: 10px;
+}
+
+.asiakas-rivi span {
+    flex: 1;
+}
+
 /* GALLERIA */
 
 .galleria {

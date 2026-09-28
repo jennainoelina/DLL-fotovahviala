@@ -4,6 +4,30 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
 
+const multer = require("multer");
+const { adminVarmistus } = require("../valiaohjelmat/adminVarmistus");
+const { varmistaKansio, poistaKuva } = require("../palvelut/galleriaPalvelu");
+
+const tallennus = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const asiakasId = req.body.asiakasId;
+    const kansio = varmistaKansio(asiakasId);
+    cb(null, kansio);
+  },
+  filename: (req, file, cb) => {
+    const nimi =
+      Date.now() +
+      "-" +
+      file.originalname.replace(/\s+/g, "_");
+
+    cb(null, nimi);
+  }
+});
+
+const upload = multer({
+  storage: tallennus
+});
+
 const GALLERIAT_POLKU = path.join(
     __dirname,
     "../julkinen/galleriat"
@@ -57,6 +81,25 @@ router.post("/luo-asiakas", async (req, res) => {
     }
 
 });
+
+/*
+====================================
+Lataa kuvia asiakkaalle
+====================================
+*/
+router.post(
+  "/lataa",
+  adminVarmistus,
+  upload.array("kuvat", 50),
+  (req, res) => {
+    res.json({
+      viesti: "Kuvat ladattu",
+      tiedostot: req.files.map(f =>
+        path.basename(f.path)
+      )
+    });
+  }
+);
 
 /*
 ====================================
@@ -194,5 +237,6 @@ router.delete("/asiakkaat/:id", (req, res) => {
     }
 
 });
+
 
 module.exports = router;
