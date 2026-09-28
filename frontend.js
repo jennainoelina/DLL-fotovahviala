@@ -90,6 +90,66 @@ async function lataaKuvat() {
 }
 
 // ===============================
+// ADMIN: asiakaslista/poisto
+// ===============================
+let asiakkaat = [
+    { id: "asiakas123" },
+    { id: "asiakas456" },
+    { id: "asiakas789" }
+];
+
+function naytaAsiakkaat() {
+    const lista = document.getElementById("asiakkaatLista");
+
+    lista.innerHTML = "";
+
+    asiakkaat.forEach(asiakas => {
+        const rivi = document.createElement("div");
+        rivi.className = "asiakas-rivi";
+
+        rivi.innerHTML = `
+            <span>${asiakas.id}</span>
+
+            <button onclick="poistaKuvat('${asiakas.id}')">
+                Poista kuvat
+            </button>
+
+            <button onclick="poistaAsiakas('${asiakas.id}')"
+                    class="danger-button">
+                Poista asiakas
+            </button>
+        `;
+
+        lista.appendChild(rivi);
+    });
+}
+
+function poistaKuvat(asiakasId) {
+    if (confirm(`Poistetaanko kaikki kuvat asiakkaalta ${asiakasId}?`)) {
+        console.log("Poistetaan kuvat:", asiakasId);
+
+        // Kutsu backendiin
+        // fetch(`/api/asiakkaat/${asiakasId}/kuvat`, { method: "DELETE" });
+    }
+}
+
+function poistaAsiakas(asiakasId) {
+    if (confirm(`Poistetaanko asiakas ${asiakasId}?`)) {
+        console.log("Poistetaan asiakas:", asiakasId);
+
+        asiakkaat = asiakkaat.filter(a => a.id !== asiakasId);
+
+        // Kutsu backendiin
+        // fetch(`/api/asiakkaat/${asiakasId}`, { method: "DELETE" });
+
+        naytaAsiakkaat();
+    }
+}
+
+document.addEventListener("DOMContentLoaded", naytaAsiakkaat);
+
+
+// ===============================
 // ADMIN: poista kuva
 // ===============================
 async function poistaKuva(asiakasId, tiedosto) {
