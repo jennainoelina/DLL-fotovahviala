@@ -159,9 +159,9 @@ footer {
 .carousel-track img {
     width: calc(100% / 3);
     object-fit: cover;
-    padding: 0 10px;
+    padding: 0 2px;
     flex-shrink: 0;
-    border-radius: 12px;
+    border-radius: 5px;
 }
 
 .prev,
@@ -207,7 +207,7 @@ footer {
 
 .etusivu-kuvat {
     max-width: 900px;
-    margin: 100px auto;
+    margin: auto;
     display: grid;
     grid-template-columns: repeat(6, 1fr); /* 6 saraketta*/
     gap: 5px;
