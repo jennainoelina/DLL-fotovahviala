@@ -4,6 +4,47 @@
 const API = "http://localhost:5000";
 
 // ===============================
+// KUVAKARUSELLI
+// ===============================
+const track = document.querySelector(".carousel-track");
+const images = document.querySelectorAll(".carousel-track img");
+
+let currentIndex = 0;
+const visibleImages = 3;
+
+function updateCarousel() {
+const imageWidth = images[0].offsetWidth;
+    track.style.transform =
+    `translateX(-${currentIndex * imageWidth}px)`;
+    }
+
+function nextSlide() {
+    currentIndex++;
+
+if (currentIndex > images.length - visibleImages) {
+    currentIndex = 0;
+    }
+
+updateCarousel();
+}
+
+document.querySelector(".next").addEventListener("click", nextSlide);
+
+document.querySelector(".prev").addEventListener("click", () => {
+    currentIndex--;
+
+if (currentIndex < 0) {
+    currentIndex = images.length - visibleImages;
+    }
+
+updateCarousel();
+});
+
+setInterval(nextSlide, 4000);
+
+
+
+// ===============================
 // ADMIN: kirjautuminen
 // ===============================
 async function kirjauduAdmin() {
@@ -322,3 +363,36 @@ async function haeKuvat() {
 function lataaZip() {
   window.location.href = `${API}/api/galleria/zip`;
 }
+
+// ===============================
+// YHTEYDENOTTOLOMAKE
+// ===============================
+document
+    .getElementById("yhteyslomake")
+    ?.addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+
+        const form = e.target;
+
+        const data = {
+            nimi: form.nimi.value,
+            sahkoposti: form.sahkoposti.value,
+            viesti: form.viesti.value
+        };
+
+        const vastaus = await fetch("/api/yhteydenotto", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (vastaus.ok) {
+            alert("Viesti lähetetty!");
+            form.reset();
+        } else {
+            alert("Lähetys epäonnistui.");
+        }
+    });
