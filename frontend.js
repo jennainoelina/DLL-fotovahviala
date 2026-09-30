@@ -34,15 +34,13 @@ document.querySelector(".prev").addEventListener("click", () => {
     currentIndex--;
 
 if (currentIndex < 0) {
-    currentIndex = images.length - visibleImages;
-    }
+currentIndex = images.length - visibleImages;
+}
 
 updateCarousel();
 });
 
 setInterval(nextSlide, 4000);
-
-
 
 // ===============================
 // ADMIN: kirjautuminen
